@@ -1,21 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import TabBar from './tabBar/tabBar';
+// import { NavigationContainer } from '@react-navigation/native';
+// import TabBar from './tabBar/tabBar';
+import MovieView from './components/movieView';
 
 export default function App() { 
   return (
-    <NavigationContainer>
-      <TabBar />
-    </NavigationContainer>
+    <MovieView/>
+    // <NavigationContainer>
+      // <TabBar />
+    // </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  navigation: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   navigation: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });

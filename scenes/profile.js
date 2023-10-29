@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import ColorView from "../reusableViews/backgroundGradient";
+import ColorView from "../components/backgroundGradient";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from "../styles/global";
 
