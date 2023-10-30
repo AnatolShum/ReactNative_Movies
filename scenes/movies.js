@@ -11,11 +11,15 @@ import SectionHeader from "../components/sectionHeader";
 
 export default function Movies() {
     const [nowPlaying, setNowPlaying] = useState([]);
-    let nowPlayingPage = 1;
+    const [nowPlayingPage, setNowPlayingPage] = useState(1);
+
     const [topRated, setTopRated] = useState([]);
-    let topRatedPage = 1;
+    const [topRatedPage, setTopRatedPage] = useState(1);
+
     const [popular, setPopular] = useState([]);
-    let popularPage = 1;
+    const [popularPage, setPopularPage] = useState(1);
+
+    let newPage;
 
     function fetchNowPlaying(page) {
         Network.fetchData({ type: Network.Argument.nowPlaying, page: page }, (error, data) => {
@@ -23,7 +27,11 @@ export default function Movies() {
                 console.error(error);
             } else { 
                 const newMovies = data.results.map(movieData => new Movie(movieData));
-                setNowPlaying(newMovies);
+                if (nowPlaying === 'undefined' || nowPlaying.length === 0) {
+                    setNowPlaying(newMovies);
+                } else {
+                    setNowPlaying(prevMovies => [...prevMovies, ...newMovies]);
+                }
              }
          });
     };
@@ -33,8 +41,12 @@ export default function Movies() {
             if (error) {
                 console.error(error);
             } else {
-                const newMovie = data.results.map(movieData => new Movie(movieData));
-                setTopRated(newMovie);
+                const newMovies = data.results.map(movieData => new Movie(movieData));
+                if (topRated === 'undefined' || topRated.length === 0) {
+                    setTopRated(newMovies);
+                } else {
+                    setTopRated(prevMovies => [...prevMovies, ...newMovies]);
+                }
             }
         });
     };
@@ -44,8 +56,12 @@ export default function Movies() {
             if (error) {
                 console.error(error);
             } else {
-                const newMovie = data.results.map(movieData => new Movie(movieData));
-                setPopular(newMovie);
+                const newMovies = data.results.map(movieData => new Movie(movieData));
+                if (popular === 'undefined' || popular.length === 0) {
+                    setPopular(newMovies);
+                } else {
+                    setPopular(prevMovies => [...prevMovies, ...newMovies]);
+                }
             }
         });
     };
@@ -74,6 +90,13 @@ return(
                         movie={item} 
                         style={styles.movieView}
                     />)}
+                    onEndReached={({ distanceFromEnd }) => {
+                        if (distanceFromEnd >= 0) {
+                            newPage = nowPlayingPage + 1;
+                            setNowPlayingPage(newPage);
+                            fetchNowPlaying(newPage);
+                        }
+                    }}
                 />
                 <SectionHeader title={'Top rated'} />
                 <FlatList
@@ -88,6 +111,13 @@ return(
                         movie={item} 
                         style={styles.movieView}
                     />)}
+                    onEndReached={({ distanceFromEnd }) => {
+                        if (distanceFromEnd >= 0) {
+                            newPage = topRatedPage + 1;
+                            setTopRatedPage(newPage);
+                            fetchTopRated(newPage);
+                        }
+                    }}
                 />
                 <SectionHeader title={'Popular'} />
                 <FlatList
@@ -102,6 +132,13 @@ return(
                         movie={item} 
                         style={styles.movieView}
                     />)}
+                    onEndReached={({ distanceFromEnd }) => {
+                        if (distanceFromEnd >= 0) {
+                            newPage = popularPage + 1;
+                            setPopularPage(newPage);
+                            fetchPopular(newPage);
+                        }
+                    }}
                 />
             </View>
         </SafeAreaView>

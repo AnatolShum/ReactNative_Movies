@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, TextInput } from "react-native";
 import Svg, { G, Circle } from "react-native-svg";
 import Ionicons from '@expo/vector-icons/Ionicons';

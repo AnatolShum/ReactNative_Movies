@@ -1,9 +1,7 @@
 import React from "react";
 import { StyleSheet, Image, View, Text } from "react-native";
-import { useState, useEffect } from "react";
 import { Network } from "../network/network";
 import CircleVoteView from "./circleVoveView";
-import { Movie } from "../models/movie";
 
 export default function MovieView({ movie }) {
     function formattedDate(dateString) {
@@ -38,7 +36,7 @@ export default function MovieView({ movie }) {
 const styles = StyleSheet.create({
     movieView: {
         width: 180,
-        height: 530,
+        height: 450,
         backgroundColor: 'black',
         position: 'relative',
         borderRadius: 25,
@@ -68,6 +66,6 @@ const styles = StyleSheet.create({
         color: '#FFFFFFB3',
         fontSize: 16,
         paddingLeft: 15,
-        paddingTop: 30,
+        paddingTop: 10,
     },
 });
