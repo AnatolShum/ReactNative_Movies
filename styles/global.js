@@ -8,6 +8,5 @@ export const globalStyles = StyleSheet.create({
     contentView: {
         backgroundColor: 'transparent',
         paddingTop: Platform.OS === 'ios' ? 40 : 50,
-        flex: 1
     },
 });
