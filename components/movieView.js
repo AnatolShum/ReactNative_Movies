@@ -3,8 +3,9 @@ import { StyleSheet, Image, View, Text } from "react-native";
 import { useState, useEffect } from "react";
 import { Network } from "../network/network";
 import CircleVoteView from "./circleVoveView";
+import { Movie } from "../models/movie";
 
-export default function MovieView() {
+export default function MovieView({ movie }) {
     function formattedDate(dateString) {
         if (!dateString) return '';
 
@@ -19,16 +20,16 @@ export default function MovieView() {
         <View style={ styles.movieView }>
             <Image
             style={ styles.movieImage }
-            source={{ uri: Network.imageURL('/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg') }}
+            source={{ uri: Network.imageURL(movie.poster) }}
             />
             <View style={ styles.overLay }>
-                 <CircleVoteView/> 
+                 <CircleVoteView vote={movie.vote} /> 
             </View>
-            <Text style={ styles.movieTitle }>
-                John Wick: Chapter 4
+            <Text style={ styles.movieTitle } numberOfLines={2} >
+                {movie.title}
             </Text>
             <Text style={ styles.movieReleaseDate }>
-               { formattedDate('2023-03-22') }
+               { formattedDate(movie.releaseDate) }
             </Text>
         </View>
     );
@@ -36,25 +37,27 @@ export default function MovieView() {
 
 const styles = StyleSheet.create({
     movieView: {
-        flex: 1,
+        width: 180,
+        height: 530,
         backgroundColor: 'black',
         position: 'relative',
+        borderRadius: 25,
     },
     movieImage: {
         width: '100%',
-        height: '75%',
+        height: '65%',
         borderRadius: 25,
         resizeMode: 'cover',
     },
     overLay: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        paddingHorizontal: 15,
         marginTop: -40,
     },
     movieTitle: {
         color: 'white',
         fontSize: 16,
+        height: 50,
         fontWeight: 'bold',
         paddingLeft: 15,
         paddingTop: 10,
@@ -65,6 +68,6 @@ const styles = StyleSheet.create({
         color: '#FFFFFFB3',
         fontSize: 16,
         paddingLeft: 15,
-        paddingTop: 50,
+        paddingTop: 30,
     },
 });

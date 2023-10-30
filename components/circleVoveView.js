@@ -3,9 +3,7 @@ import { StyleSheet, View, TextInput } from "react-native";
 import Svg, { G, Circle } from "react-native-svg";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function CircleVoteView() {
-    const [vote, setVote] = useState(7.8);
-
+export default function CircleVoteView({ vote }) {
     function setColor(vote) {
             if (vote < 3) {
                 return 'purple';
@@ -23,7 +21,7 @@ export default function CircleVoteView() {
     }
 
     const strokeColor = setColor(vote);
-    const radius = 40;
+    const radius = 35;
     const circleCircumference = 2 * Math.PI * radius;
     const strokeDashoffset = circleCircumference * (1 - vote / 10);
 
@@ -45,7 +43,7 @@ export default function CircleVoteView() {
                     strokeOpacity={0.7}
                     strokeLinecap="round"
                     strokeWidth={6}
-                    r={40}
+                    r={radius}
                     fill={'transparent'}
                     strokeDasharray={ circleCircumference }
                     strokeDashoffset={ strokeDashoffset }
@@ -59,8 +57,7 @@ export default function CircleVoteView() {
                 <Ionicons name='ios-star' color={'yellow'} size={20} /> 
                 <TextInput
                     underlineColorAndroid='transparent'
-                    onChangeText={(text) => setVote(Number(text))}
-                    value={vote.toString()}
+                    value={vote.toFixed(1)}
                     editable={false}
                     style={ styles.textInputStyle }
             />

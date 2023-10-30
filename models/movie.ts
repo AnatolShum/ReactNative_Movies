@@ -1,15 +1,5 @@
 import { Double } from "react-native/Libraries/Types/CodegenTypes";
 
-type ConstructorParams = {
-    title: String;
-    id: Number;
-    backdrop_path: String;
-    poster_path: String;
-    release_date: String;
-    overview: String;
-    vote_average: Double;
-};
-
 export class Movie {
     public title: String;
     public id: Number;
@@ -19,21 +9,13 @@ export class Movie {
     public overview: String;
     public vote: Double;
 
-    constructor({
-        title,
-        id,
-        backdrop_path,
-        poster_path,
-        release_date,
-        overview,
-        vote_average,
-    }: ConstructorParams) {
-        this.title = title;
-        this.id = id;
-        this.backdrop = backdrop_path;
-        this.poster = poster_path;
-        this.releaseDate = release_date;
-        this.overview = overview;
-        this.vote = vote_average;
+    constructor(movieData) {
+        this.title = movieData.title;
+        this.id = movieData.id;
+        this.backdrop = movieData.backdrop_path;
+        this.poster = movieData.poster_path;
+        this.releaseDate = movieData.release_date;
+        this.overview = movieData.overview;
+        this.vote = movieData.vote_average;
     }
 }

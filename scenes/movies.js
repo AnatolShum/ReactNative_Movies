@@ -1,23 +1,43 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { useState, useEffect } from "react";
+import { StyleSheet, View, FlatList, Text } from "react-native";
 import ColorView from "../components/backgroundGradient";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from "../styles/global";
 import { Network } from "../network/network";
+import { Movie } from "../models/movie";
+import MovieView from "../components/movieView";
 
 export default function Movies() {
-    const data = Network.fetchData({ type: Network.Argument.movie, id: 603692 }, (error, data) => {
-        if (error) {
-            console.error(error);
-        } else { 
-            console.log(data); 
-        }
-    });
+    const [movies, setMovies] = useState([]);
+
+    useEffect(() => {
+        Network.fetchData({ type: Network.Argument.nowPlaying, page: 1 }, (error, data) => {
+            if (error) {
+                console.error(error);
+            } else { 
+                const newMovies = data.results.map(movieData => new Movie(movieData));
+                setMovies(newMovies);
+            }
+        });
+    }, []);
+
 return(
 <ColorView>
     <SafeAreaView style={ globalStyles.safeArea }>
         <View style={ globalStyles.contentView }>
-            <Text style={ styles.textStyle }>Home screen</Text>
+            <FlatList
+                data={movies}
+                horizontal={true}
+                style={styles.flatList}
+                ItemSeparatorComponent={() => <View style={{width: 10}} />}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({item}) => (
+                <MovieView 
+                    movie={item} 
+                    style={styles.movieView}
+                />)}
+            />
         </View>
     </SafeAreaView>
 </ColorView>
@@ -25,7 +45,11 @@ return(
 }
 
 const styles = StyleSheet.create({
-    textStyle: {
-        color: 'white',
+    movieView: {
+        width: 80,
+    },
+    flatList: {
+        paddingLeft: 10,
+        paddingRight: 10,
     },
 });
