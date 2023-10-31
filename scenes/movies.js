@@ -81,15 +81,16 @@ return(
                 <FlatList
                     data={nowPlaying}
                     horizontal={true}
-                    style={styles.flatList}
+                    style={globalStyles.flatList}
                     ItemSeparatorComponent={() => <View style={{width: 10}} />}
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={(item, index) => item+index}
                     renderItem={({item}) => (
                     <MovieView 
                         movie={item} 
-                        style={styles.movieView}
+                        style={globalStyles.movieView}
                     />)}
+                    onEndReachedThreshold={2}
                     onEndReached={({ distanceFromEnd }) => {
                         if (distanceFromEnd >= 0) {
                             newPage = nowPlayingPage + 1;
@@ -102,15 +103,16 @@ return(
                 <FlatList
                     data={topRated}
                     horizontal={true}
-                    style={styles.flatList}
+                    style={globalStyles.flatList}
                     ItemSeparatorComponent={() => <View style={{width: 10}} />}
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={(item, index) => item+index}
                     renderItem={({item}) => (
                     <MovieView 
                         movie={item} 
-                        style={styles.movieView}
+                        style={globalStyles.movieView}
                     />)}
+                    onEndReachedThreshold={2}
                     onEndReached={({ distanceFromEnd }) => {
                         if (distanceFromEnd >= 0) {
                             newPage = topRatedPage + 1;
@@ -123,15 +125,16 @@ return(
                 <FlatList
                     data={popular}
                     horizontal={true}
-                    style={styles.flatList}
+                    style={globalStyles.flatList}
                     ItemSeparatorComponent={() => <View style={{width: 10}} />}
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={(item, index) => item+index}
                     renderItem={({item}) => (
                     <MovieView 
                         movie={item} 
-                        style={styles.movieView}
+                        style={globalStyles.movieView}
                     />)}
+                    onEndReachedThreshold={2}
                     onEndReached={({ distanceFromEnd }) => {
                         if (distanceFromEnd >= 0) {
                             newPage = popularPage + 1;
@@ -146,14 +149,3 @@ return(
 </ColorView>
 );
 }
-
-const styles = StyleSheet.create({
-    movieView: {
-        width: 80,
-    },
-    flatList: {
-        paddingLeft: 10,
-        paddingRight: 10,
-        maxHeight: 530,
-    },
-});
