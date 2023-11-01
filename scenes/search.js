@@ -24,32 +24,32 @@ export default function Search() {
 
     return(
 <ColorView>
-        <SafeAreaView style={ globalStyles.safeArea }>
-            <View style={globalStyles.contentView}>
-                <TextInput
-                    placeholder="Search"
-                    clearButtonMode="always"
-                    style={ globalStyles.searchBar }
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    onChangeText={(query) => fetchSearch(query)}
-                />
-                <FlatList
-                    data={search}
-                    numColumns={2}
-                    columnWrapperStyle={{justifyContent: 'space-between'}} 
-                    ItemSeparatorComponent={() => <View style={{height: 10}} />}
-                    style={[globalStyles.flatList, {paddingTop: 10}]}
-                    showsHorizontalScrollIndicator={false}
-                    keyExtractor={(item, index) => item+index}
-                    renderItem={({item}) => (
+    <SafeAreaView style={ globalStyles.safeArea }>
+        <View style={globalStyles.contentView}>
+            <TextInput
+                placeholder="Search"
+                clearButtonMode="always"
+                style={ globalStyles.searchBar }
+                autoCapitalize="none"
+                autoCorrect={false}
+                onChangeText={(query) => fetchSearch(query)}
+            />
+            <FlatList
+                data={search}
+                numColumns={2}
+                columnWrapperStyle={{justifyContent: 'space-around'}} 
+                ItemSeparatorComponent={() => <View style={{height: 10}} />}
+                style={[globalStyles.flatList, {paddingTop: 10}]}
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(item, index) => item+index}
+                renderItem={({item}) => (
                     <MovieView 
                         movie={item} 
                         style={globalStyles.movieView}
                     />)}
-                />
-            </View>
-        </SafeAreaView>
+            />
+        </View>
+    </SafeAreaView>
 </ColorView>
     );
 }

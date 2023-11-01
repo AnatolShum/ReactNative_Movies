@@ -1,11 +1,50 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useState, useEffect } from 'react';
 import TabBar from './tabBar/tabBar';
+import Login from './scenes/login';
+import Forgot from './scenes/forgot';
+import Register from './scenes/register';
+import { onAuthStateChanged } from 'firebase/auth';
+import { User } from 'firebase/auth';
+import { FirebaseAuth } from './FirebaseConfig';
 
-export default function App() { 
+const Stack = createNativeStackNavigator();
+const TabStack = createNativeStackNavigator();
+
+function LoginLayout() {
   return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name='Login' component={Login} options={{ headerShown: false }}/>
+        <Stack.Screen name='Forgot' component={Forgot} options={{headerShown: true, headerTransparent: true, headerTitle: ''}}/>
+        <Stack.Screen name='Register' component={Register} options={{headerShown: true, headerTransparent: true, headerTitle: ''}}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+function TabLayout() {
+  return(
     <NavigationContainer>
       <TabBar/>
     </NavigationContainer>
   );
+}
+
+export default function App() { 
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged(FirebaseAuth, (user) => {
+      setUser(user);
+    })
+  }, [])
+  
+  if (user) {
+    return(TabLayout());
+  } else {
+    return(LoginLayout());
+  }
 }
