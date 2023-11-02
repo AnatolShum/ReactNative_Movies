@@ -7,11 +7,9 @@ import Login from './scenes/login';
 import Forgot from './scenes/forgot';
 import Register from './scenes/register';
 import { onAuthStateChanged } from 'firebase/auth';
-import { User } from 'firebase/auth';
 import { FirebaseAuth } from './FirebaseConfig';
 
 const Stack = createNativeStackNavigator();
-const TabStack = createNativeStackNavigator();
 
 function LoginLayout() {
   return (
@@ -34,10 +32,11 @@ function TabLayout() {
 }
 
 export default function App() { 
+  const auth = FirebaseAuth;
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    onAuthStateChanged(FirebaseAuth, (user) => {
+    onAuthStateChanged(auth, (user) => {
       setUser(user);
     })
   }, [])

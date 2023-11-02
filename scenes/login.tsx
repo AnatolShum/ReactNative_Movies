@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 import TitleView from "../components/titleView";
 import { FirebaseAuth } from "../FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -20,11 +20,29 @@ export default function Login({ navigation }) {
         navigation.navigate('Register');
     }
 
-    function logIn() {
-        console.log('Log in')
+    async function logIn() {
+        if (!validate()) return;
+        
+        setLoading(true);
+        try {
+            const response = await signInWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            alert(error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     function validate(): Boolean {
+        if (!email.trim() && !password.trim()) {
+            alert("Please fill in all fields.");
+            return false;
+        }
+
+        if (!(email.includes('@') && email.includes('.'))) {
+            alert("Please enter valid email.");
+            return false;
+        }
 
         return true
     }
@@ -55,7 +73,9 @@ export default function Login({ navigation }) {
                     <Text style={ styles.forgotText }>Forgot password?</Text>
                 </TouchableOpacity>
                 <View style={ globalStyles.lineView }/>
-                <ActionButton title={'Log in'} color={'#FF3B30E6'} action={logIn}/>
+                {loading ? 
+                <ActivityIndicator color={'#FF3B30E6'} style={{marginTop: 25, marginBottom: 25}}/> : 
+                <ActionButton title={'Log in'} color={'#FF3B30E6'} action={logIn}/>}
             </View>
             <TouchableOpacity 
             onPress={createAnAccount}

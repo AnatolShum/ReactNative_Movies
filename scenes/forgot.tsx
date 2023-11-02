@@ -1,19 +1,40 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { View, TextInput } from "react-native";
 import TitleView from "../components/titleView";
 import ActionButton from "../components/actionButton";
 import { globalStyles } from "../styles/global";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { FirebaseAuth } from "../FirebaseConfig";
 
-export default function Forgot() {
+export default function Forgot({ navigation }) {
     const [email, setEmail] = useState('');
+    const auth = FirebaseAuth;
 
-    function resetPassword() {
-        console.log('Forgot')
+    async function resetPassword() {
+        if (!validate()) return;
+        let error = null;
+        try {
+            await sendPasswordResetEmail(auth, email);
+        } catch (err) {
+            alert(err);
+            error = err;
+        } finally {
+            if (!error) navigation.popToTop();
+        }
     }
 
     function validate(): Boolean {
+        if (!email.trim()) {
+            alert("Please fill in email address.");
+            return false;
+        }
 
+        if (!(email.includes('@') && email.includes('.'))) {
+            alert("Please enter valid email.");
+            return false;
+        }
+        
         return true
     }
     return(

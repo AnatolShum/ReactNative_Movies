@@ -1,27 +1,55 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import ColorView from "../components/backgroundGradient";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from "../styles/global";
 import { Ionicons } from '@expo/vector-icons'; 
+import { FirebaseAuth, FirebaseDB } from "../FirebaseConfig";
+import { signOut } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { User, userConverter } from "../models/user";
 
 export default function Profile() {
-    const [user, setUser] = useState(null);
-
+    const initialUser = new User('', '', '', Date());
+    const [user, setUser] = useState(initialUser);
     const name = 'Name';
-    const [userName, setUserName] = useState('User Name');
-
     const email = 'Email';
-    const [userEmail, setUserEmail] = useState('User Email');
-
     const memberSince = 'Member since';
-    const [userSince, setUserSince] = useState('Date');
+    const [loading, setLoading] = useState(false);
+    const auth = FirebaseAuth;
 
-    const [loading, setLoading] = useState(true);
+    function formattedDate(string) {
+        let date = string.replace(/^\S+\s/, '');
+        date = date.replace(/\sGMT.*/, '');
+        return date;
+    };
 
-    function signOut() {
-        console.log('Button tapped');
+    async function fetchUser() {
+        const userID = auth.currentUser.uid;
+        const db = FirebaseDB;
+        const ref = doc(db, "users", userID).withConverter(userConverter);
+        const docSnapshot = await getDoc(ref);
+        
+        if (docSnapshot.exists()) {
+            const data = docSnapshot.data();
+            const currentUser = new User(data.id, data.name, data.email, formattedDate(data.joined));
+            setUser(currentUser);
+        } else {
+            console.log("No such document!");
+        }
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
+    async function logOut() {
+        try {
+           await signOut(auth);
+        } catch (error) {
+            alert(error);
+        }
     };
 
     if (loading) {
@@ -46,19 +74,19 @@ export default function Profile() {
             <View style={ globalStyles.profileSectionView }>
                 <Text style={ globalStyles.profileHeaderTitle }>{name}</Text>
                 <View style={ globalStyles.profileTitleView }>
-                    <Text style={ globalStyles.profileTitle }>{userName}</Text>
+                    <Text style={ globalStyles.profileTitle }>{user.name}</Text>
                 </View>
                 <Text style={ [globalStyles.profileHeaderTitle, { paddingTop: 20 }] }>{email}</Text>
                 <View style={ globalStyles.profileTitleView }>
-                    <Text style={ globalStyles.profileTitle }>{userEmail}</Text>
+                    <Text style={ globalStyles.profileTitle }>{user.email}</Text>
                 </View>
                 <Text style={ [globalStyles.profileHeaderTitle, { paddingTop: 20 }] }>{memberSince}</Text>
                 <View style={ globalStyles.profileTitleView }>
-                    <Text style={ globalStyles.profileTitle }>{userSince}</Text>
+                    <Text style={ globalStyles.profileTitle }>{user.joined}</Text>
                 </View>
                 <TouchableOpacity
                     style={ globalStyles.profileButton }
-                    onPress={signOut}
+                    onPress={logOut}
                 >
                     <Text style={ globalStyles.buttonTitle }>Sign out</Text>
                 </TouchableOpacity>
