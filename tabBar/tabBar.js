@@ -1,13 +1,25 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Movies from '../scenes/movies';
+import MovieDetailView from "../scenes/movieDetail";
 import Favourites from '../scenes/favourites';
 import Search from '../scenes/search';
 import Profile from '../scenes/profile';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
+const MoviesStack = createNativeStackNavigator();
+
+function MoviesStackScreen() {
+    return(
+        <MoviesStack.Navigator screenOptions={{headerShown: false}}>
+            <MoviesStack.Screen name="Movies" component={Movies}/>
+            <MoviesStack.Screen name="MovieDetailView" component={MovieDetailView}/>
+        </MoviesStack.Navigator>
+    );
+}
 
 const TabBar = () => {
     return(
@@ -15,18 +27,12 @@ const TabBar = () => {
           screenOptions={{
             tabBarActiveTintColor: '#007AFFB3',
             tabBarInactiveTintColor: '#8E8E93E6',
-            headerTransparent: true,
-            headerTintColor: 'white',
-            headerTitleAlign: 'left',
-            headerTitleStyle: {
-                fontSize: 32,
-                fontWeight: '700',
-            }
+            headerShown: false,
         }}
         >
             <Tab.Screen 
              name='Movies' 
-             component={Movies}
+             component={MoviesStackScreen}
              options={{
                 tabBarLabel: 'Movies',
                 tabBarIcon: ({ color, size }) => (

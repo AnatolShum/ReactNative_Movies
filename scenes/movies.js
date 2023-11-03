@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { StyleSheet, View, FlatList, ScrollView } from "react-native";
+import { TouchableOpacity, View, FlatList, ScrollView } from "react-native";
 import ColorView from "../components/backgroundGradient";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from "../styles/global";
@@ -8,8 +8,9 @@ import { Network } from "../network/network";
 import { Movie } from "../models/movie";
 import MovieView from "../components/movieView";
 import SectionHeader from "../components/sectionHeader";
+import NavigationHeader from "../components/navigationHeader";
 
-export default function Movies() {
+export default function Movies({ navigation }) {
     const [nowPlaying, setNowPlaying] = useState([]);
     const [nowPlayingPage, setNowPlayingPage] = useState(1);
 
@@ -77,6 +78,7 @@ return(
     <ScrollView>
         <SafeAreaView style={ globalStyles.safeArea }>
             <View style={ globalStyles.contentView }>
+                <NavigationHeader header={'Movies'} title={null} action={null}/>
                 <SectionHeader title={'Now playing'} />
                 <FlatList
                     data={nowPlaying}
@@ -86,10 +88,12 @@ return(
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={(item, index) => item+index}
                     renderItem={({item}) => (
+                        <TouchableOpacity onPress={() => navigation.navigate('MovieDetailView', item)}>
                     <MovieView 
                         movie={item} 
                         style={globalStyles.movieView}
-                    />)}
+                    />
+                    </TouchableOpacity>)}
                     onEndReachedThreshold={2}
                     onEndReached={({ distanceFromEnd }) => {
                         if (distanceFromEnd >= 0) {

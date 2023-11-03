@@ -6,17 +6,13 @@ interface Equatable {
     equals(other: any): Boolean;
 }
 
-type ConstructorParams = {
-    file_path: String;
-};
+
 
 export class Photos implements Identifiable, Equatable {
     public path: String;
 
-constructor({
-    file_path,
-}: ConstructorParams) {
-    this.path = file_path;
+constructor(photosData) {
+    this.path = photosData.file_path;
 }
 
 get id(): String {
