@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Movies from '../scenes/movies';
 import MovieDetailView from "../scenes/movieDetail";
+import ImageView from "../scenes/fullScreenImage";
 import Favourites from '../scenes/favourites';
 import Search from '../scenes/search';
 import Profile from '../scenes/profile';
@@ -17,6 +18,7 @@ function MoviesStackScreen() {
         <MoviesStack.Navigator screenOptions={{headerShown: false}}>
             <MoviesStack.Screen name="Movies" component={Movies}/>
             <MoviesStack.Screen name="MovieDetailView" component={MovieDetailView}/>
+            <MoviesStack.Screen name="ImageView" component={ImageView}/>
         </MoviesStack.Navigator>
     );
 }

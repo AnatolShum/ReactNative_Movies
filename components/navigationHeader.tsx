@@ -29,14 +29,14 @@ export default function NavigationHeader({header, title, action}) {
 
             {isHeader ?
             <View style={styles.titleView}>
-                <Text style={styles.title}>Header</Text>
+                <Text style={styles.title}>{header}</Text>
             </View> : <></>}
 
             {isTitle ? 
             <TouchableOpacity onPress={action}>
             <View style={styles.touchableView}>
                 <Ionicons name="ios-chevron-back" size={25} color="blue" />
-                <Text style={styles.touchableTitle}>Movies</Text>
+                <Text style={styles.touchableTitle}>{title}</Text>
             </View>
             </TouchableOpacity> : <></>}
             

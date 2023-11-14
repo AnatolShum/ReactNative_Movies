@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Image, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import CircleVoteView from "../components/circleVoveView";
 import NavigationHeader from "../components/navigationHeader";
-import { globalStyles } from "../styles/global";
 import { Network } from "../network/network";
 import { Ionicons } from '@expo/vector-icons';
 import { Photos } from "../models/photos";
+import { getColors } from "react-native-image-colors";
+
 
 export default function MovieDetailView({ route, navigation }) {
     const item = route.params;
+    const url = Network.imageURL(item.backdrop);
     const [favourite, setFavourite] = useState(false);
     const initialPhotos = new Photos("/pbrkL804c8yAv3zBZR4QPEafpAR.jpg");
     const [photos, setPhotos] = useState([initialPhotos]);
+    const [color, setColor] = useState('black');
 
     function titleLength(): Object {
         if (item.title.length < 25) return({flexDirection: 'row'});
@@ -36,15 +39,31 @@ export default function MovieDetailView({ route, navigation }) {
     });
     }
 
+    // async function averageColor() {
+    //     const result = await getColors(url, {
+    //         cache: true,
+    //         key: url
+    //     });
+
+    //     if (result.platform === 'android') {
+    //         console.log(result.average);
+        
+    //     } else if (result.platform === 'ios') {
+    //         console.log(result.background);
+            
+    //     }
+    // }
+
     useEffect(() => {
         fetchPhotos(item.id);
+        // averageColor();
     }, []);
 
     return(
-        <View style={ styles.container }>
+        <View style={[ styles.container, {backgroundColor: color} ]}>
             <ScrollView style={{width: '100%'}}>
             
-            <Image style={styles.detailImage} source={{uri: Network.imageURL(item.backdrop)}}/>
+            <Image style={styles.detailImage} source={{uri: url}}/>
             <View style={{paddingTop: 50}}>
                 <View style={styles.heartButton}>
                     <NavigationHeader header={null} title={'Movies'} action={goBack}/>
@@ -81,7 +100,7 @@ export default function MovieDetailView({ route, navigation }) {
                 ItemSeparatorComponent={() => <View style={{width: 12}} />}
                 showsHorizontalScrollIndicator={false}
                 renderItem={({item}) => (
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('ImageView', {item, photos})}>
                         <Image style={styles.photos} source={{uri: Network.imageURL(item.path)}}/>
                     </TouchableOpacity>
                 )}
@@ -96,7 +115,6 @@ export default function MovieDetailView({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "black"
     },
     detailImage: {
         width: '100%',
