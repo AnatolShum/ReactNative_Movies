@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Movies from '../scenes/movies';
 import MovieDetailView from "../scenes/movieDetail";
 import ImageView from "../scenes/fullScreenImage";
+import PlayerView from "../scenes/player";
 import Favourites from '../scenes/favourites';
 import Search from '../scenes/search';
 import Profile from '../scenes/profile';
@@ -19,6 +20,7 @@ function MoviesStackScreen() {
             <MoviesStack.Screen name="Movies" component={Movies}/>
             <MoviesStack.Screen name="MovieDetailView" component={MovieDetailView}/>
             <MoviesStack.Screen name="ImageView" component={ImageView}/>
+            <MoviesStack.Screen name="PlayerView" component={PlayerView}/>
         </MoviesStack.Navigator>
     );
 }
@@ -33,7 +35,7 @@ const TabBar = () => {
         }}
         >
             <Tab.Screen 
-             name='Movies' 
+             name='MoviesStack' 
              component={MoviesStackScreen}
              options={{
                 tabBarLabel: 'Movies',

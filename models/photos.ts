@@ -6,8 +6,6 @@ interface Equatable {
     equals(other: any): Boolean;
 }
 
-
-
 export class Photos implements Identifiable, Equatable {
     public path: String;
 

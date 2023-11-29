@@ -11,7 +11,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { User, userConverter } from "../models/user";
 
 export default function Profile() {
-    const initialUser = new User('', 'User name', 'Email address', Date());
+    const initialUser = new User('', '', '', '');
     const [user, setUser] = useState(initialUser);
     const name = 'Name';
     const email = 'Email';

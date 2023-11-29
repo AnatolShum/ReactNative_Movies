@@ -88,7 +88,7 @@ return(
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={(item, index) => item+index}
                     renderItem={({item}) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('MovieDetailView', item)}>
+                    <TouchableOpacity onPress={() => navigation.navigate('MovieDetailView', item)}>
                     <MovieView 
                         movie={item} 
                         style={globalStyles.movieView}
@@ -112,10 +112,12 @@ return(
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={(item, index) => item+index}
                     renderItem={({item}) => (
+                    <TouchableOpacity onPress={() => navigation.navigate('MovieDetailView', item)}>
                     <MovieView 
                         movie={item} 
                         style={globalStyles.movieView}
-                    />)}
+                    />
+                    </TouchableOpacity>)}
                     onEndReachedThreshold={2}
                     onEndReached={({ distanceFromEnd }) => {
                         if (distanceFromEnd >= 0) {
@@ -134,10 +136,12 @@ return(
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={(item, index) => item+index}
                     renderItem={({item}) => (
+                    <TouchableOpacity onPress={() => navigation.navigate('MovieDetailView', item)}>
                     <MovieView 
                         movie={item} 
                         style={globalStyles.movieView}
-                    />)}
+                    />
+                    </TouchableOpacity>)}
                     onEndReachedThreshold={2}
                     onEndReached={({ distanceFromEnd }) => {
                         if (distanceFromEnd >= 0) {

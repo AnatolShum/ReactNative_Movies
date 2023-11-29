@@ -6,8 +6,8 @@ import TabBar from './tabBar/tabBar';
 import Login from './scenes/login';
 import Forgot from './scenes/forgot';
 import Register from './scenes/register';
-import { onAuthStateChanged } from 'firebase/auth';
 import { FirebaseAuth } from './FirebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,9 +41,9 @@ export default function App() {
     })
   }, [])
   
-  // if (user) {
+  if (user) {
     return(TabLayout());
-  // } else {
-  //   return(LoginLayout());
-  // }
+  } else {
+    return(LoginLayout());
+  }
 }

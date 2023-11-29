@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { View, TextInput, FlatList } from "react-native";
+import { View, TextInput, FlatList, TouchableOpacity } from "react-native";
 import ColorView from "../components/backgroundGradient";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from "../styles/global";
@@ -8,7 +8,7 @@ import { Network } from "../network/network";
 import { Movie } from "../models/movie";
 import MovieView from "../components/movieView";
 
-export default function Search() {
+export default function Search({ navigation }) {
     const [search, setSearch] = useState([]);
 
     function fetchSearch(query) {
@@ -43,10 +43,12 @@ export default function Search() {
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, index) => item+index}
                 renderItem={({item}) => (
+                    <TouchableOpacity onPress={() => navigation.navigate('MovieDetailView', item)}>
                     <MovieView 
                         movie={item} 
                         style={globalStyles.movieView}
-                    />)}
+                    />
+                    </TouchableOpacity>)}
             />
         </View>
     </SafeAreaView>

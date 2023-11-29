@@ -4,9 +4,10 @@ import CircleVoteView from "../components/circleVoveView";
 import NavigationHeader from "../components/navigationHeader";
 import { Network } from "../network/network";
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Photos } from "../models/photos";
-import { getColors } from "react-native-image-colors";
-
+import ImageColors from "react-native-image-colors";
+import { Videos } from "../models/videos";
 
 export default function MovieDetailView({ route, navigation }) {
     const item = route.params;
@@ -15,6 +16,8 @@ export default function MovieDetailView({ route, navigation }) {
     const initialPhotos = new Photos("/pbrkL804c8yAv3zBZR4QPEafpAR.jpg");
     const [photos, setPhotos] = useState([initialPhotos]);
     const [color, setColor] = useState('black');
+    const [key, setKey] = useState(null);
+    const [isTrailer, setIsTrailer] = useState(true);
 
     function titleLength(): Object {
         if (item.title.length < 25) return({flexDirection: 'row'});
@@ -39,24 +42,49 @@ export default function MovieDetailView({ route, navigation }) {
     });
     }
 
-    // async function averageColor() {
-    //     const result = await getColors(url, {
-    //         cache: true,
-    //         key: url
-    //     });
+    function fetchVideos(id) {
+        Network.fetchData({ type: Network.Argument.videos, id: id}, (error, data) => {
+            if (error) {
+                console.error(error);
+            } else {
+                const fetchedVideos = data.results.map(videosData => new Videos(videosData));
+                videoKey(fetchedVideos);
+            }
+        });
+    }
 
-    //     if (result.platform === 'android') {
-    //         console.log(result.average);
-        
-    //     } else if (result.platform === 'ios') {
-    //         console.log(result.background);
-            
-    //     }
-    // }
+    function videoKey(videos) {
+        if (videos.length > 0) {
+            let firstVideo = videos[0].key;
+            let filteredVideo = videos.find(video => video.official === true && video.type === "Trailer" && video.site === "YouTube");
+            if (!filteredVideo) {
+                setKey(firstVideo);
+            } else {
+                setKey(filteredVideo.key);
+            }
+        } else {
+            setIsTrailer(false);
+        }
+    }
+
+    async function col() {
+        try {
+            const colors = await ImageColors.getColors(url, {
+                fallback: 'red',
+                cache: true,
+                key: url
+            });
+
+            setColor(colors.platform);
+            console.log(colors.platform);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         fetchPhotos(item.id);
-        // averageColor();
+        fetchVideos(item.id);
     }, []);
 
     return(
@@ -84,8 +112,9 @@ export default function MovieDetailView({ route, navigation }) {
                 <Text style={styles.verticalBar}>Score</Text>
                 <Text style={styles.verticalBar}>|</Text>
 
-                <TouchableOpacity style={styles.trailerButton}>
-                    <Ionicons name="ios-play" size={20} color="white" />
+                <TouchableOpacity style={styles.trailerButton} onPress={() => {navigation.navigate('PlayerView', key)}}>
+                    {isTrailer ? <Ionicons name="ios-play" size={20} color="white" /> :
+                    <MaterialIcons name="play-disabled" size={25} color="white" />}
                     <Text style={styles.trailerTitle}>Trailer</Text>
                 </TouchableOpacity>
             </View>

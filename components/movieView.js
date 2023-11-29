@@ -20,6 +20,7 @@ export default function MovieView({ movie }) {
 
     function isFavoutite() {
         setFavourite(!favourite);
+        
     }
 
     return(
