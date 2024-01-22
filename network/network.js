@@ -1,3 +1,4 @@
+import { ApiKey } from "../secret";
 
     export class Network {
        static Argument = {
@@ -12,7 +13,7 @@
 
         static createURL(argument) {
             const baseURL = 'https://api.themoviedb.org';
-            const apiKey = '82494d16f78e0aa1a4a03a103791b923';
+            const apiKey = ApiKey.key;
             let path, queryParams;
     
             switch (argument.type) {

@@ -41,9 +41,9 @@ export default function App() {
     })
   }, [])
   
-  if (user) {
+  // if (user) {
     return(TabLayout());
-  } else {
-    return(LoginLayout());
-  }
+  // } else {
+  //   return(LoginLayout());
+  // }
 }
